@@ -5,7 +5,7 @@
             <div class="grid grid-flow-row auto-rows-max">
                 @foreach ($messages as $message)
                 @php
-                $isCurrenUser = Auth::user()->id === $message['userId'];
+                $isCurrenUser = Auth::user()->id === $message['user_id'];
                 @endphp
                 <div @class([ 'flex' , 'justify-end'=> $isCurrenUser
                     ])
@@ -18,7 +18,7 @@
                         ]);
                         >
                         <div class="flex flex-col">
-                            <span class="text-sm text-gray-500"> {{ $message['userName'] }} </span>
+                            <span class="text-sm text-gray-500"> {{ $message['user']['name'] }} </span>
                             <span> {{ $message['message'] }} </span>
                         </div>
                     </div>

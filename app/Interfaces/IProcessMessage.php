@@ -2,7 +2,8 @@
 
 namespace App\Interfaces;
 
-interface IProcessMessage {
+interface IProcessMessage
+{
 
-    public function process(int $user_id, string $message);
+    public function process(string $message);
 }

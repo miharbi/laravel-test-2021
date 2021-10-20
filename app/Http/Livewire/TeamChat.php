@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Interfaces\IProcessMessage;
 use App\Models\User;
+use App\Models\Message;
+use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class TeamChat extends Component
@@ -25,7 +26,7 @@ class TeamChat extends Component
     {
         $this->user = auth()->user();
         $this->message = "";
-        $this->messages = [];
+        $this->messages = $this->fetchMessages();
     }
 
     public function render()
@@ -36,25 +37,41 @@ class TeamChat extends Component
     public function sendMessage(IProcessMessage $action)
     {
         $validatedData = $this->validate();
-        $message = $action->process($this->user->id, $validatedData['message']);
+        $message = $action->process($validatedData['message']);
+        $this->message = "";
         $this->messages[] = [
-            'userId' => $this->user->id,
-            'userName' => $this->user->name,
-            'userMail' => $this->user->email,
+            'user_id' => $this->user->id,
+            'user' => $this->user,
             'message' => $message
         ];
     }
 
     public function messageReceived($data)
     {
-        $user = User::find($data['user']);
+        $user = User::find($data['user_id']);
         if ($user->id !== Auth::user()->id) {
             $this->messages[] = [
-                'userId' => $user->id,
-                'userName' => $user->name,
-                'userMail' => $user->email,
+                'user_id' => $user->id,
+                'user' => $user,
                 'message' => $data['message']
             ];
         }
+    }
+
+    /**
+     * Fetch all messages
+     *
+     * @return Message
+     */
+    public function fetchMessages()
+    {
+        $messages =  Message::with('user')
+            ->latest()
+            ->limit(8)
+            ->get()
+            ->sortBy([['id', 'asc']])
+            ->toArray();
+
+        return $messages;
     }
 }
