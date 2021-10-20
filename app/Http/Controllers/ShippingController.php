@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Shipping;
 use App\Interfaces\IShippingService;
+use App\Http\Requests\ShippingPostRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShippingController extends Controller
 {
@@ -27,7 +29,7 @@ class ShippingController extends Controller
     public function create(Request $request)
     {
         $shipmentSuccess = ($request->session()->has('shipmentSuccess')) ? $request->session()->get('shipmentSuccess') : false;
-        return view('shipping/shipping-form',['shipmentSuccess' => $shipmentSuccess]);
+        return view('shipping/shipping-form', ['shipmentSuccess' => $shipmentSuccess]);
     }
 
     /**
@@ -36,19 +38,25 @@ class ShippingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, IShippingService $shippingService)
+    public function store(ShippingPostRequest $request, IShippingService $shippingService)
     {
-        if($request->input('destination') == 1){
-            $destinationAddress = "Sucursal EEUU, Avenue lorem ipsum dolor 13000";
-        } elseif ($request->input('destination') == 2) {
-            $destinationAddress = "Sucursal X región Chile, Avenida lorem ipsum dolor 16000";
+        if ($request->input('destination') == 2) {
+            $user = Auth::user();
+            $user->shippings()->create([
+                'name' => $request->input('name'),
+                'height' => $request->input('height'),
+                'width' => $request->input('width'),
+                'weight' => $request->input('weight'),
+                'destination' => $request->input('destination')
+            ]);
         }
+
         $shipment = $shippingService->store(
             $request->input('name'),
             $request->input('height'),
             $request->input('width'),
             $request->input('weight'),
-            $destinationAddress
+            $request->input('destination')
         );
         return redirect()->route('shippings.create')->with('shipmentSuccess', $shipment);
     }
