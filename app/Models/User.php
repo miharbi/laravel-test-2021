@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
+
+    /**
+     * A user can have many messages
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function daily_meetings()
+    {
+        return $this->hasMany(DailyMeeting::class);
+    }
 }
