@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\DailyMeeting;
+
 class DailyMeetingController extends Controller
 {
     /**
@@ -14,7 +15,13 @@ class DailyMeetingController extends Controller
      */
     public function index()
     {
-        return view('daily-meeting', ['dailys' => []]);
+        $dailys = DailyMeeting::whereDate('created_at', today())
+            // ->groupBy('user_id')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->unique('user_id');
+
+        return view('daily-meeting', compact('dailys'));
     }
 
     /**

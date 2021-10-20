@@ -21,6 +21,10 @@ class DailyMeeting extends Model
         'todo'
     ];
 
+    protected $appends = [
+        'is_listable'
+    ];
+
     /**
      * A message belong to a user
      *
@@ -29,5 +33,10 @@ class DailyMeeting extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getIsListableAttribute()
+    {
+        return !empty($this->done) || !empty($this->blocking) || !empty($this->todo) || !empty($this->doing);
     }
 }

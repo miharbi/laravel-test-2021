@@ -49,7 +49,6 @@ class ProcessMessage implements IProcessMessage
             }
             if (count($columnsInfo)) {
                 $user = Auth::user();
-                \Log::info($columnsInfo);
                 $message = $user->daily_meetings()->create($columnsInfo);
             }
         }
