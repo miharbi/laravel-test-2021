@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Interfaces\IProcessMessage;
+use App\Events\MessageSent;
 
 class ProcessMessage implements IProcessMessage
 {
@@ -14,6 +15,7 @@ class ProcessMessage implements IProcessMessage
      */
     public function process(int $user_id, string $message)
     {
+        broadcast(new MessageSent($user_id, $message))->toOthers();
         return $message;
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Interfaces\IProcessMessage;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TeamChat extends Component
 {
@@ -15,12 +17,15 @@ class TeamChat extends Component
         'message' => 'required',
     ];
 
+    protected $listeners = [
+        'messageReceived'
+    ];
+
     public function mount()
     {
         $this->user = auth()->user();
         $this->message = "";
         $this->messages = [];
-
     }
 
     public function render()
@@ -42,11 +47,14 @@ class TeamChat extends Component
 
     public function messageReceived($data)
     {
-        $this->messages[] = [
-            'userId' => $data['user']['id'],
-            'userName' => $data['user']['name'],
-            'userMail' => $data['user']['email'],
-            'message' => $data['message']
-        ];
+        $user = User::find($data['user']);
+        if ($user->id !== Auth::user()->id) {
+            $this->messages[] = [
+                'userId' => $user->id,
+                'userName' => $user->name,
+                'userMail' => $user->email,
+                'message' => $data['message']
+            ];
+        }
     }
 }

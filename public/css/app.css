@@ -1136,23 +1136,17 @@ select {
 .col-span-4 {
 	grid-column: span 4 / span 4;
 }
-.col-span-3 {
-	grid-column: span 3 / span 3;
-}
-.col-span-1 {
-	grid-column: span 1 / span 1;
-}
 .col-span-2 {
 	grid-column: span 2 / span 2;
 }
 .col-start-2 {
 	grid-column-start: 2;
 }
-.m-4 {
-	margin: 1rem;
-}
 .m-3 {
 	margin: 0.75rem;
+}
+.m-4 {
+	margin: 1rem;
 }
 .m-2 {
 	margin: 0.5rem;
@@ -1247,9 +1241,6 @@ select {
 }
 .inline-flex {
 	display: inline-flex;
-}
-.table {
-	display: table;
 }
 .grid {
 	display: grid;
@@ -1410,15 +1401,6 @@ select {
 }
 .grid-cols-3 {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.grid-cols-4 {
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-.grid-cols-2 {
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.grid-cols-5 {
-	grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 .flex-col {
 	flex-direction: column;
@@ -1632,11 +1614,11 @@ select {
 .p-6 {
 	padding: 1.5rem;
 }
-.p-4 {
-	padding: 1rem;
-}
 .p-3 {
 	padding: 0.75rem;
+}
+.p-4 {
+	padding: 1rem;
 }
 .px-4 {
 	padding-left: 1rem;
